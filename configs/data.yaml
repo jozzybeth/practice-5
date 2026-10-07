@@ -1,0 +1,8 @@
+raw_dir: "data/raw"
+processed_dir: "data/processed"
+
+articles_path: "data/raw/articles.json"
+questions_path: "data/raw/questions.json"
+ground_truth_path: "data/raw/ground_truth.json"
+
+output_dir: "data/processed"
