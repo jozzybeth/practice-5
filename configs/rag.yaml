@@ -5,6 +5,7 @@ top_k_retrieval: 10
 top_k_context: 3
 weights: [0.5, 0.5]
 vector_db_path: "models/qdrant_db"
+bm25_path: "models/bm25_retriever.pkl"
 
 prompt: |
   Ты отвечаешь на вопросы по внутренней базе знаний компании.

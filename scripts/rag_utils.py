@@ -1,4 +1,5 @@
 import os
+import pickle
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -53,7 +54,17 @@ def build_hybrid_retriever(articles: list[dict], rag_config: dict):
         search_kwargs={"k": rag_config["top_k_retrieval"]}
     )
 
-    bm25_retriever = BM25Retriever.from_documents(chunks)
+    bm25_path = rag_config.get("bm25_path", "models/bm25_retriever.pkl")
+    os.makedirs(os.path.dirname(bm25_path), exist_ok=True)
+
+    if os.path.exists(bm25_path):
+        with open(bm25_path, "rb") as f:
+            bm25_retriever = pickle.load(f)
+    else:
+        bm25_retriever = BM25Retriever.from_documents(chunks)
+        with open(bm25_path, "wb") as f:
+            pickle.dump(bm25_retriever, f)
+
     bm25_retriever.k = rag_config["top_k_retrieval"]
 
     return EnsembleRetriever(
